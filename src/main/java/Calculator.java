@@ -17,6 +17,6 @@ public class Calculator {
 	}
 
 	public int solver() {
-		return 228;
+		return -1;
 	}
 }
