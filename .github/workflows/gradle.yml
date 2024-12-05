@@ -1,0 +1,43 @@
+name: Java CI with Gradle
+
+on:
+  schedule:
+    - cron: '30 12 * * 3'
+    - cron: '0 22 * * 5'
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        java-version: [11, 13, 17]
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Execute permission for gradlew
+    - name: Make gradlew executable
+      if: runner.os != 'Windows'
+      run: chmod +x gradlew
+    
+    - name: Set up JDK ${{ matrix.java-version }}
+      uses: actions/setup-java@v4
+      with:
+        java-version: ${{ matrix.java-version }}
+        distribution: 'temurin'
+
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v4 
+      with:
+        gradle-version: '8.5'
+
+    - name: Build with Gradle Wrapper
+      run: ./gradlew build
