@@ -12,6 +12,7 @@ public class Calculator {
 		return a - b;
 	}
 
+
 	public int div(int a, int b) {
 		if (b == 0) throw new IllegalArgumentException("Error div on 0!");
 		return a / b;
